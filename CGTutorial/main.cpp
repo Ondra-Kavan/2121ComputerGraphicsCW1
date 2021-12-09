@@ -1,7 +1,7 @@
 /*
  *
  *	2D Scene Rendering in OpenGL
- *	
+ *
  *	Ondrej Kavan
  *
  */
@@ -14,12 +14,24 @@
 #include <CoreStructures/CoreStructures.h>
 #include <iostream>
 
+#include "texture_loader.h"
+#include "texture_loader.hpp"
+
 using namespace std;
-using namespace CoreStructures;
+//using namespace CoreStructures;
+
+/*
+ * Global variables
+ */
+
+GLuint bg_texture;
+GLuint texture;
 
 
 void init(int argc, char* argv[]);
 void display(void);
+void draw_textured_quad(GLuint texture);
+void draw_textured_quad(GLuint texture, GLfloat tl_pos_x, GLfloat tl_pos_y, GLfloat br_pos_x, GLfloat br_pos_y);
 
 
 int main(int argc, char* argv[]) {
@@ -43,7 +55,7 @@ void init(int argc, char* argv[]) {
 
 	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(64, 64);
-	glutCreateWindow("Draw a Triangle!");
+	glutCreateWindow("AAAAAAAAAAA!!!!!!!");
 
 	// Display callback
 	glutDisplayFunc(display);
@@ -66,6 +78,15 @@ void init(int argc, char* argv[]) {
 
 	// 3. Initialise OpenGL settings and objects we'll use in our scene
 	glClearColor(.0, .0, .0, .0);
+
+
+	// Texture stuff
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	bg_texture = fiLoadTexture(R"(Textures\BG.jpg)");
+	texture = fiLoadTexture(R"(..\..\Common\Resources\Textures\bumblebee.png)");
 }
 
 
@@ -78,8 +99,56 @@ void display(void) {
 	 * DRAW
 	 */
 
+	draw_textured_quad(bg_texture);
+	draw_textured_quad(texture, -0.5,0.5,0.5,-0.5);
 
-
-	//instructs the rendering that you are done with the current frame and buffers should be swapped to work on the next one.
+	 //instructs the rendering that you are done with the current frame and buffers should be swapped to work on the next one.
 	glutSwapBuffers();
+}
+
+
+void draw_textured_quad(GLuint texture)
+{
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_TEXTURE_2D);
+
+	glBegin(GL_QUADS);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(-1, 1.0f);
+
+	glTexCoord2f(0, 1);
+	glVertex2f(-1, -1);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(1.0f, -1);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(1.0f, 1.0f);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
+void draw_textured_quad(GLuint texture, GLfloat tl_pos_x, GLfloat tl_pos_y, GLfloat br_pos_x, GLfloat br_pos_y)
+{
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_TEXTURE_2D);
+
+	glBegin(GL_QUADS);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(tl_pos_x, tl_pos_y);
+
+	glTexCoord2f(0, 1);
+	glVertex2f(tl_pos_x, br_pos_y);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(br_pos_x, br_pos_y);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(br_pos_x, tl_pos_y);
+
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
