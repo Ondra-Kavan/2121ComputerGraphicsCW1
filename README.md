@@ -55,3 +55,18 @@ accordingly.
 * A short video demonstrating your implementation, the results obtained and the problems you faced in 
 implementing the assignment. Please note that failure to demonstrate your OpenGL scene may result 
 in a mark not being awarded. 
+
+
+## Notes
+I had a lot of problems with this coursework. First I had some problems using the libraries,
+so I just ended up using the tutorial projects as a base for my own. I started with the week one tutorial as a base,
+but I had problems with loading a picture with transparency using the ```wicLoadTexture()```,
+so I switched to using the week9 tutorial as a base project.
+### The result
+![screenshot #1](img.png)  
+I ended up with this. I render a textured quad in the background with one of my photos as the texture.
+Another textured quad is than in front of it using a texture with transparency. And finally the transparent rectangle to the side
+is my attempt at making the tardis movable. But it isn't displaying properly. I suspect that the reason for that is the shader.  
+Other than the texture not displaying properly it works ok. You can move it around using the mouse, change the rotation with the ```p``` key
+and reset the rotation using the ```r``` key.
+
